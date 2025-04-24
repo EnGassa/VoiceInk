@@ -3,21 +3,18 @@
     <channel>
         <title>VoiceInk Releases</title>
         <item>
-            <title>1.22</title>
-            <pubDate>Sat, 20 Apr 2025 12:00:00 +0545</pubDate>
-            <sparkle:version>122</sparkle:version>
-            <sparkle:shortVersionString>1.22</sparkle:shortVersionString>
+            <title>1.24</title>
+            <pubDate>Sat, 24 Apr 2025 12:00:00 +0545</pubDate>
+            <sparkle:version>124</sparkle:version>
+            <sparkle:shortVersionString>1.24</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <description><![CDATA[
-                    <h3>What's New in Version 1.22 🚀⚡</h3>
+                    <h3>What's New in Version 1.24 🚀⚡</h3>
                              <ul>
-                                <li>🔄 Added back Base.en model</li>
-                                <li>🎮 Added Right control support for push-to-talk key by @yar</li>
-                                <li>🐛 Fixed Fn push-to-talk key bug</li>
-                                <li>⚙️ Other Minor bug fixes & Improvements</li>
+                                <li>🐛 Minor Bug Fixes related to recording Issue</li>
                             </ul>
             ]]></description>
-           <enclosure url="https://github.com/Beingpax/VoiceInk/releases/download/v1.22/VoiceInk.dmg" length="7998406" type="application/octet-stream" sparkle:edSignature="4lC1t+cUHkJoJXGZZOOqSkdtOsl7yB7eEfRKKEKiFVdsYkGmDy/Grt085SBcVQHWZF9jbfAx0cnEgLTPB/pwAg=="/>
+           <enclosure url="https://github.com/Beingpax/VoiceInk/releases/download/1.24/VoiceInk.dmg" length="7989817" type="application/octet-stream" sparkle:edSignature="+OVcot6o8LX1w+kDS+4hY321z88KFbXHflcMg6jHounbu1Sz4NhgK+1hTSdW/NLrneWfxCFnshqQSlxUeUXlCw=="/>
         </item>
     </channel>
 </rss>
