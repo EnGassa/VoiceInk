@@ -5,16 +5,18 @@
         <item>
             <title>1.24</title>
             <pubDate>Sat, 24 Apr 2025 12:00:00 +0545</pubDate>
-            <sparkle:version>122</sparkle:version>
-            <sparkle:shortVersionString>1.22</sparkle:shortVersionString>
+            <sparkle:version>124</sparkle:version>
+            <sparkle:shortVersionString>1.24</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <description><![CDATA[
                     <h3>What's New in Version 1.24 🚀⚡</h3>
                              <ul>
-                                <li>🐛 Minor Bug Fixes related to recording Issue</li>
+                                <li><li>
+                                <li>▶️ Add space at the end of transcription <li>
+                                <li>🐛 Minor Bug Fixes & Improvements</li>
                             </ul>
             ]]></description>
-           <enclosure url="https://github.com/Beingpax/VoiceInk/releases/download/1.24/VoiceInk.dmg" length="7989817" type="application/octet-stream" sparkle:edSignature="+OVcot6o8LX1w+kDS+4hY321z88KFbXHflcMg6jHounbu1Sz4NhgK+1hTSdW/NLrneWfxCFnshqQSlxUeUXlCw=="/>
+           <enclosure url="https://github.com/Beingpax/VoiceInk/releases/download/1.24/VoiceInk.dmg" length="7994145" type="application/octet-stream" sparkle:edSignature="Bac1g9C9j24+LKdWaWZZfmXVoe5NIEMG6bWgacWrpz2MtWNCa6pmwqbez/SBJBXkYVO6X8HafADbZNecsgCpBg=="/>
         </item>
     </channel>
 </rss>
