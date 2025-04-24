@@ -76,6 +76,9 @@ class Recorder: ObservableObject {
 
         _ = await mediaController.muteSystemAudio()
         let deviceID = deviceManager.getCurrentDevice()
+        if let deviceName = deviceManager.getDeviceName(deviceID: deviceID) {
+            logger.notice("🎤 Using audio input device: \(deviceName) (ID: \(deviceID))")
+        }
         if deviceID != 0 {
             do {
                 try await configureAudioSession(with: deviceID)

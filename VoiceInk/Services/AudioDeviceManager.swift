@@ -45,18 +45,42 @@ class AudioDeviceManager: ObservableObject {
     }
     
     private func setupFallbackDevice() {
-        let deviceID: AudioDeviceID? = getDeviceProperty(
-            deviceID: AudioObjectID(kAudioObjectSystemObject),
-            selector: kAudioHardwarePropertyDefaultInputDevice
+        var propertySize = UInt32(MemoryLayout<AudioDeviceID>.size)
+        var deviceID: AudioDeviceID = 0
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioHardwarePropertyDefaultInputDevice,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
         )
         
-        if let deviceID = deviceID {
+        let status = AudioObjectGetPropertyData(
+            AudioObjectID(kAudioObjectSystemObject),
+            &address,
+            0,
+            nil,
+            &propertySize,
+            &deviceID
+        )
+        
+        if status == noErr && deviceID != 0 {
             fallbackDeviceID = deviceID
             if let name = getDeviceName(deviceID: deviceID) {
-                logger.info("Fallback device set to: \(name) (ID: \(deviceID))")
+                logger.info("System default input device: \(name) (ID: \(deviceID))")
+            }
+            
+            // Log all available devices for comparison
+            logger.info("Available input devices:")
+            for device in availableDevices {
+                if let name = getDeviceName(deviceID: device.id) {
+                    logger.info("- \(name) (ID: \(device.id))")
+                }
             }
         } else {
-            logger.error("Failed to get fallback device")
+            logger.error("Failed to get system default input device: \(status)")
+            if let firstInputDevice = availableDevices.first {
+                fallbackDeviceID = firstInputDevice.id
+                logger.info("Using first available input device as fallback: \(firstInputDevice.name)")
+            }
         }
     }
     
@@ -248,6 +272,11 @@ class AudioDeviceManager: ObservableObject {
     func getCurrentDevice() -> AudioDeviceID {
         switch inputMode {
         case .systemDefault:
+            if let fallback = fallbackDeviceID, fallback != 0 {
+                return fallback
+            }
+            // If no fallback device, try to get system default again
+            setupFallbackDevice()
             return fallbackDeviceID ?? 0
         case .custom:
             return selectedDeviceID ?? fallbackDeviceID ?? 0
@@ -465,20 +494,28 @@ class AudioDeviceManager: ObservableObject {
     func isCurrentDeviceValidAndAvailable() -> Bool {
         let currentID = getCurrentDevice()
         
-        // Check for invalid ID (e.g., 0)
         guard currentID != 0 else {
             logger.error("Current device ID is invalid (0).")
             return false
         }
         
-        // Check if the device is in the list of available devices
+        if inputMode == .systemDefault {
+            do {
+                _ = try AudioDeviceConfiguration.configureAudioSession(with: currentID)
+                return true
+            } catch {
+                logger.error("System default device is not available: \(error.localizedDescription)")
+                return false
+            }
+        }
+        
         let isAvailable = availableDevices.contains { $0.id == currentID }
         
         if !isAvailable {
             if let deviceName = getDeviceName(deviceID: currentID) {
-                 logger.warning("Selected device '\(deviceName)' (ID: \(currentID)) is no longer available.")
+                logger.warning("Selected device '\(deviceName)' (ID: \(currentID)) is no longer available.")
             } else {
-                 logger.warning("Selected device ID \(currentID) is no longer available.")
+                logger.warning("Selected device ID \(currentID) is no longer available.")
             }
         }
         
