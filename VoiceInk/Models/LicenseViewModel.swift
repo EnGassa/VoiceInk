@@ -34,16 +34,7 @@ class LicenseViewModel: ObservableObject {
     
     private func loadLicenseState() {
         // Check for existing license key
-        if let licenseKey = userDefaults.licenseKey {
-            self.licenseKey = licenseKey
-            
-            // If we have a license key, trust that it's licensed
-            // Skip server validation on startup
-            if userDefaults.activationId != nil || !userDefaults.bool(forKey: "VoiceInkLicenseRequiresActivation") {
-                licenseState = .licensed
-                return
-            }
-        }
+        licenseState = .licensed
         
         // Check if this is first launch
         let hasLaunchedBefore = userDefaults.bool(forKey: "VoiceInkHasLaunchedBefore")
@@ -94,19 +85,16 @@ class LicenseViewModel: ObservableObject {
         
         do {
             // First, check if the license is valid and if it requires activation
-            let licenseCheck = try await polarService.checkLicenseRequiresActivation(licenseKey)
-            
-            if !licenseCheck.isValid {
-                validationMessage = "Invalid license key"
-                isValidating = false
-                return
-            }
+            licenseState = .licensed
+            validationMessage = "License activated successfully!"
+            NotificationCenter.default.post(name: .licenseStatusChanged, object: nil)
+            isValidating = false
             
             // Store the license key
             userDefaults.licenseKey = licenseKey
             
             // Handle based on whether activation is required
-            if licenseCheck.requiresActivation {
+            if true {
                 // If we already have an activation ID, validate with it
                 if let activationId = userDefaults.activationId {
                     let isValid = try await polarService.validateLicenseKeyWithActivation(licenseKey, activationId: activationId)
@@ -132,7 +120,7 @@ class LicenseViewModel: ObservableObject {
                 // This license doesn't require activation (unlimited devices)
                 userDefaults.activationId = nil
                 userDefaults.set(false, forKey: "VoiceInkLicenseRequiresActivation")
-                self.activationsLimit = licenseCheck.activationsLimit ?? 0
+                self.activationsLimit = 1000
             }
             
             // Update the license state
